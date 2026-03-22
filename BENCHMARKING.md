@@ -79,18 +79,29 @@ TODO: I need to figure out what % of a weekly plan this query consumes. Then, I 
 
 #### Codex
 
+> Subscription Plan ($20 plan)
+
+Codex only reveals what % of your weekly limit is consumed, unlike Kiro, which reveals the number of consumed credits. The percentage it shows is rounded to the nearest percentage point (no decimals). Therefore, I must run this prompt a few times to more accurately determine what % of the weekly limit was used up.
+
 > Using GPT 5.4
 
-TODO
+Ran it 5x and it used 2% of weekly limit, so one inference requests consumes about: 
+
+```
+2% ÷ 5 = 0.4%  (% of the weekly plan)
+0.4% ÷ 4 = 0.1%  (% of the monthly plah)
+
+Each inference consumes about 0.1% of the monthly plan.
+```
 
 #### Cost Analysis
 
-(incomplete - todo)
+Fundamentally, every inference request sent to the harness must go through API behind the scenes. Our goal here is to analyze the true cost that every subscription-based harness incurs and compare it to the plan cost to determine how much 
 
-Fundamentally, everything goes through API in the harness backend. Both Cline and Claude Code expose raw API costs directly, but since Kiro's (large!) context window is closer to Cline's, we'll use Cline as the baseline to derive the true dollar value of a Kiro credit."
+**Kiro**
+In order to compute the cost of a Kiro credit, we must compare it to either Cline or Claude Code, which expose the raw API costs. Since Kiro's (large) context window is closer in size to Cline, we can use Cline as the baseline to derive the user surplus (defined as `value received in dollars / price paid in dollars`)
 
-- Kiro: 0.54 credits
-- Cline: $0.15
+0.54 credits (Kiro) = $0.15 (Cline)
 
 ```
 1 Kiro credit = $0.15 / 0.54 ≈ $0.278
@@ -102,8 +113,18 @@ $20 Kiro plan (1,000 credits):
 1000 credits × $0.278/credit = $277.78 in true API cost
 ```
 
-That's ~14x the plan price in actual API spend.
+That's ~14x the price of the plan!
 
+**Codex**
+The results above reveal that I get 1000x of these inference requests. Assuming that each inference request costs the same as what Claude Code's API costs (refer to README.md to understand why this assumption is valid), the true cost that Codex incurs can be computed as:
+
+> We compare to Claude Code API cost and not Cline's, as Codex's system prompt is presumably more similar to Claude Code, both being from frontier model companies. This is a guess.
+
+```
+1000 × 0.067 = $67 in true API cost
+```
+
+That's ~3.5x the price of the plan.
 
 ### Scenario 2: Explaining Code
 
@@ -116,6 +137,11 @@ That's ~14x the plan price in actual API spend.
 
 ## Conclusions
 
-- Claude Code is cheaper than Cline despite using both using the same model and having no markups. This is most likely due to Cline's longer system prompts, which was verified by seeing token consumption. This doesn't mean Claude Code is inherently "better" though - these longer system prompts could lead to better performance on tasks (that is probably the intent of the longer system prompt)
+| Harness | Value Leverage |
+|---|---:|
+| Kiro | 14 |
+| Codex | 3.5 |
 
-- 
+> 'Value Leverage' is defined as the monetary value of inference that consumers of the harness receive relative to the price they pay
+
+- Claude Code is cheaper than Cline despite using both using the same model and having no markups. This is most likely due to Cline's longer system prompts, which was verified by seeing token consumption. This doesn't mean Claude Code is inherently "better" though - these longer system prompts could lead to better performance on tasks (that is probably the intent of the longer system prompt)
