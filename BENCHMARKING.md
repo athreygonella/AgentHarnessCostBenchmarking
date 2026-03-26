@@ -95,6 +95,12 @@ Ran it 5x and it used 2% of weekly limit, so one inference requests consumes abo
 Each inference consumes about 0.1% of the monthly plan.
 ```
 
+#### Github Copilot
+
+> Using Opus 4.6
+
+$10 for 100 inference requests
+
 #### Cost Analysis
 
 Fundamentally, every inference request sent to the harness must go through API behind the scenes. Our goal here is to analyze the true cost that every subscription-based harness incurs and compare it to the plan cost to determine how much 
@@ -136,6 +142,14 @@ The results above reveal that I get 1000x of these inference requests. Assuming 
 
 That's ~3.5x the price of the plan.
 
+**Github Copilot**
+
+```
+100 * 0.067 = $6.7 in true API cost
+```
+
+That's 0.67x the price of thep lan
+
 ### Scenario 2: Explaining Code
 
 *TODO*
@@ -152,9 +166,12 @@ That's ~3.5x the price of the plan.
 | Kiro | 14 | Explaining a Concept |
 | Claude Code | 7.4 | Explaining a Concept |
 | Codex | 3.5 | Explaining a Concept |
+| GitHub Copilot | 0.67 | Explaining a Concept |
 
 > 'Value Leverage' is defined as the monetary value of inference that consumers of the harness receive relative to the price they pay
 
 - Claude Code is cheaper than Cline despite using both using the same model and having no markups. This is most likely due to Cline's longer system prompts, which was verified by seeing token consumption. This doesn't mean Claude Code is inherently "better" though; longer system prompts could lead to better task performance (which is probably the reason for longer system prompts)
 
-- Despite popular belief and empirical evidence, Claude Code seems about two times cheaper than Codex. This is most likely due to Claude Code being cheaper for explaining concepts; I'm pretty sure that Claude Code will be more expensive than Codex for coding tasks.
+- Despite popular belief and empirical evidence, Claude Code seems about two times cheaper than Codex. This is most likely due to Claude Code being cheaper for explaining concepts; I'm pretty sure that Claude Code will be more expensive than Codex for coding tasks
+
+- Obviously, Copilot is not worth it for simple requests. So it's expected that Copilot will rank better for the more difficult scenarios
