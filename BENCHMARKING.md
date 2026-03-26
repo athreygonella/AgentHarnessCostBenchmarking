@@ -67,13 +67,14 @@ Results suggest some form of caching after the first inference — cost drops no
 
 **Subscription Plan**
 
-TODO: I need to figure out what % of a weekly plan this query consumes. Then, I can determine how much this costs in a month, relative to the fixed price of $100 or whatever. and can also then compare it to the api pricing. and compare it to kiro to see the "true cost".
+Ran it 11x and it used 2% of weekly limit, so one inference request consumes about:
 
-| Run | 1 | 2 | 3 | 4 | 5 |
-|-----|---|---|---|---|---|
-|     |   |   |   |   |   |
+```
+2% ÷ 11 = 0.1818%  (% of the weekly plan)
+0.1818% ÷ 4 = 0.04545%  (% of the monthly plan)
 
-
+Each inference consumes about 0.045% of the monthly plan.
+```
 
 > Units are percentages (of *weekly plan*)
 
@@ -113,7 +114,16 @@ $20 Kiro plan (1,000 credits):
 1000 credits × $0.278/credit = $277.78 in true API cost
 ```
 
-That's ~14x the price of the plan!
+That's **~14x** the price of the plan!
+ 
+**Claude Code**
+The results above reveal that I get 2200x of these inference requests. Assuming that each inference request costs the same as what Claude Code's API costs (refer to README.m to understand why this assumption is valid), the true cost that Claude Code incurs can be computed as:
+
+```
+2200 x $0.067 = $147.4 in true API cost
+```
+
+That's ~7.4x the price of the plan.
 
 **Codex**
 The results above reveal that I get 1000x of these inference requests. Assuming that each inference request costs the same as what Claude Code's API costs (refer to README.md to understand why this assumption is valid), the true cost that Codex incurs can be computed as:
@@ -137,11 +147,14 @@ That's ~3.5x the price of the plan.
 
 ## Conclusions
 
-| Harness | Value Leverage |
-|---|---:|
-| Kiro | 14 |
-| Codex | 3.5 |
+| Harness | Value Leverage | Scenario |
+|---|---:|---|
+| Kiro | 14 | Explaining a Concept |
+| Claude Code | 7.4 | Explaining a Concept |
+| Codex | 3.5 | Explaining a Concept |
 
 > 'Value Leverage' is defined as the monetary value of inference that consumers of the harness receive relative to the price they pay
 
-- Claude Code is cheaper than Cline despite using both using the same model and having no markups. This is most likely due to Cline's longer system prompts, which was verified by seeing token consumption. This doesn't mean Claude Code is inherently "better" though - these longer system prompts could lead to better performance on tasks (that is probably the intent of the longer system prompt)
+- Claude Code is cheaper than Cline despite using both using the same model and having no markups. This is most likely due to Cline's longer system prompts, which was verified by seeing token consumption. This doesn't mean Claude Code is inherently "better" though; longer system prompts could lead to better task performance (which is probably the reason for longer system prompts)
+
+- Despite popular belief and empirical evidence, Claude Code seems about two times cheaper than Codex. This is most likely due to Claude Code being cheaper for explaining concepts; I'm pretty sure that Claude Code will be more expensive than Codex for coding tasks.
